@@ -3,26 +3,33 @@
 
 stack = []
 
-file = open('Runner.java', 'r')
+try:
+    infile = open("Runner.java", "r")
+except:
+    print("Could not read file")
 
-count = 0
+try:
+    outfile = open("Formatted_Runner.java", "w")
+except:
+    print("Could not create output file")
 
+
+#Read file line by line and format each line accordingly
 while True:
     
-    
-    c = file.read(1)
-    if not c:
+    line = infile.readline()  
+    line.strip()
+    if not line:
         break
     
-    if c == '{':
-        stack.append(c)
-        count += 1
-        print(count)
-    
-    elif c == '}':
-        stack.pop()
-        count -= 1
-        print(count)
+    if '{' in line and len(line) > 1:
+        #Replace first instance of { with null character
+        #Print { on the next line
+        line = line.replace('{', '', 1)
+        outfile.writelines([line, '{\n'])
         
-if stack.count('{') == 0:
-    print("Program is balanced")       
+    else:
+        outfile.write(line) 
+
+infile.close()
+outfile.close()    
